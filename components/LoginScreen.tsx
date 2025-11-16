@@ -1,7 +1,7 @@
-
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { HeartIcon } from './icons';
 import { UserProgress } from '../types';
+import SyncProgressModal from './SyncProgressModal';
 
 interface LoginScreenProps {
   onLogin: (name: string) => void;
@@ -9,7 +9,7 @@ interface LoginScreenProps {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,46 +23,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       alert("Please enter your name first before loading progress.");
       return;
     }
-    fileInputRef.current?.click();
+    setIsSyncModalOpen(true);
   };
-
-  const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const content = event.target?.result;
-        if (typeof content !== 'string') throw new Error("Invalid file content");
-        
-        const importedProgress: UserProgress = JSON.parse(content);
-
-        if (!importedProgress.name || importedProgress.name.toLowerCase() !== name.trim().toLowerCase()) {
-          alert(`This progress file seems to be for "${importedProgress.name}", not "${name.trim()}". Please choose the correct file or enter the correct name.`);
-          return;
-        }
-        if (typeof importedProgress.completedTasks === 'undefined' || typeof importedProgress.streak === 'undefined') {
-            throw new Error("Invalid progress file format.");
-        }
-
-        window.localStorage.setItem(`userProgress_${name.trim()}`, JSON.stringify(importedProgress));
-        
-        onLogin(name.trim());
-
-      } catch (error) {
-        console.error("Error importing progress:", error);
-        alert("Could not load progress from this file. It might be corrupted or not a valid progress file.");
-      } finally {
-        // Reset file input value to allow re-uploading the same file
-        if (e.target) {
-            e.target.value = '';
-        }
-      }
-    };
-    reader.readAsText(file);
-  };
-
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blush to-cream p-4">
@@ -101,19 +63,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             >
                 Load Our Progress
             </button>
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileSelected}
-                accept="application/json"
-                style={{ display: 'none' }}
-            />
         </div>
          <div className="mt-8 text-xs text-gray-500 font-sans">
             <p><strong>Note for the developer (my amazing partner):</strong></p>
             <p>This app stores all progress on your device. To add/edit tasks or rewards, you'll need to edit the `data/mockData.ts` file in the code. To add a personalized Gemini story, edit `components/RewardModal.tsx` where it says "Your Name".</p>
         </div>
       </div>
+      <SyncProgressModal 
+        isOpen={isSyncModalOpen}
+        onClose={() => setIsSyncModalOpen(false)}
+        userNameToLoad={name}
+        onLoadSuccess={onLogin}
+      />
     </div>
   );
 };

@@ -3,7 +3,8 @@ import { Task, Reward, UserProgress, TaskType } from '../types';
 import useUserProgress from '../hooks/useUserProgress';
 import RewardModal from './RewardModal';
 import { TASKS, REWARDS } from '../data/mockData';
-import { HeartIcon, CheckCircleIcon, LockIcon, GiftIcon, DownloadIcon } from './icons';
+import { HeartIcon, CheckCircleIcon, LockIcon, GiftIcon, SyncIcon } from './icons';
+import SyncProgressModal from './SyncProgressModal';
 
 interface DashboardProps {
   userName: string;
@@ -17,7 +18,7 @@ const isToday = (someDate: string) => {
            date.getFullYear() === today.getFullYear();
 };
 
-const Header: React.FC<{ userName: string, streak: number, onDownload: () => void }> = ({ userName, streak, onDownload }) => (
+const Header: React.FC<{ userName: string, streak: number, onOpenSync: () => void }> = ({ userName, streak, onOpenSync }) => (
     <header className="bg-blush/80 backdrop-blur-sm p-4 rounded-b-2xl shadow-lg sticky top-0 z-10">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
             <div>
@@ -29,8 +30,8 @@ const Header: React.FC<{ userName: string, streak: number, onDownload: () => voi
                     <HeartIcon className="w-8 h-8 text-red-500 mx-auto"/>
                     <span className="font-bold text-lg text-rose-gold">{streak}</span>
                 </div>
-                <button onClick={onDownload} title="Download Progress" className="font-sans bg-rose-gold text-white p-2 rounded-full hover:bg-opacity-80 transition">
-                    <DownloadIcon className="w-5 h-5" />
+                <button onClick={onOpenSync} title="Sync Progress" className="font-sans bg-rose-gold text-white p-2 rounded-full hover:bg-opacity-80 transition">
+                    <SyncIcon className="w-5 h-5" />
                 </button>
             </div>
         </div>
@@ -99,6 +100,7 @@ const RewardItem: React.FC<{ reward: Reward, isUnlocked: boolean, onOpen: (rewar
 const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
   const [userProgress, saveUserProgress] = useUserProgress(userName);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
 
   const tasks = useMemo(() => TASKS, []);
   const rewards = useMemo(() => REWARDS, []);
@@ -145,21 +147,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
       saveUserProgress(newProgress);
   }, [userProgress, saveUserProgress, tasks]);
 
-  const handleDownload = useCallback(() => {
-    if (!userProgress) return;
-
-    const dataStr = JSON.stringify(userProgress, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `love-quests-progress-${userName}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }, [userProgress, userName]);
-
   if (!userProgress) {
     return (
         <div className="min-h-screen bg-rose-gold flex items-center justify-center">
@@ -170,7 +157,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
 
   return (
     <div className="min-h-screen bg-cream font-sans text-charcoal">
-      <Header userName={userName} streak={userProgress.streak} onDownload={handleDownload} />
+      <Header userName={userName} streak={userProgress.streak} onOpenSync={() => setIsSyncModalOpen(true)} />
       
       <main className="max-w-4xl mx-auto p-4 md:p-6 space-y-8">
         <section>
@@ -201,6 +188,15 @@ const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
         reward={selectedReward} 
         onClose={() => setSelectedReward(null)}
         userProgress={userProgress}
+      />
+      <SyncProgressModal 
+        isOpen={isSyncModalOpen}
+        onClose={() => setIsSyncModalOpen(false)}
+        userNameToLoad={userName}
+        onLoadSuccess={() => {
+            // This is mainly for the login screen, but we close the modal here
+            setIsSyncModalOpen(false);
+        }}
       />
     </div>
   );
