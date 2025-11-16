@@ -21,9 +21,9 @@ export const TASKS: Task[] = [
   {
     id: 't3',
     title: 'Morning Appreciation',
-    description: 'For 5 days, start each morning by telling each other one thing you love about them.',
-    type: TaskType.DAILY,
-    duration: 5,
+    description: 'For 1 days, start each morning by telling each other one thing you love about them.',
+    type: TaskType.ONCE,
+    duration: 1,
     rewardId: 'r3',
   },
   {
@@ -39,9 +39,9 @@ export const TASKS: Task[] = [
 export const REWARDS: Reward[] = [
   {
     id: 'r1',
-    title: 'A Special Poem',
+    title: 'A Special Video',
     type: RewardType.TEXT,
-    content: "Roses are red, violets are blue, being hydrated is great, and so are you! You're doing amazing, my love.",
+    content: "A 30 second video of me doing random stuff",
   },
   {
     id: 'r2',
