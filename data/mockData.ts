@@ -13,7 +13,7 @@ export const TASKS: Task[] = [
   {
     id: 't2',
     title: 'A Walk to Remember',
-    description: 'Go for a 20-minute walk together, hold hands, and talk about your day.',
+    description: 'Go for a 20-minuts without ai',
     type: TaskType.ONCE,
     duration: 1,
     rewardId: 'r2',
@@ -46,8 +46,8 @@ export const REWARDS: Reward[] = [
   {
     id: 'r2',
     title: 'Our Adventure',
-    type: RewardType.IMAGE,
-    content: 'https://picsum.photos/seed/lovewalk/600/400',
+    type: RewardType.TEXT,
+    content: 'Such a good girll',
   },
   {
     id: 'r3',
