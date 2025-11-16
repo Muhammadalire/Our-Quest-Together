@@ -26,7 +26,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label htmlFor="name" className="block text-sm font-bold text-charcoal mb-2 font-sans">
-              What should I call you, my love?
+              Enter your name my love?
             </label>
             <input
               type="text"
@@ -34,7 +34,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name here"
-              className="font-sans shadow-inner appearance-none border-2 border-blush rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-rose-gold focus:border-transparent transition"
+              className="font-sans shadow-inner appearance-none border-2 border-blush rounded-lg w-full py-3 px-4 text-white-700 leading-tight focus:outline-none focus:ring-2 focus:ring-rose-gold focus:border-transparent transition"
               required
             />
           </div>

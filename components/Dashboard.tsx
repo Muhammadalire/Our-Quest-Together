@@ -24,7 +24,7 @@ const Header: React.FC<{ userName: string, streak: number, onDownload: () => voi
                 <h1 className="font-serif text-2xl md:text-3xl text-rose-gold">For {userName}</h1>
                 <p className="font-sans text-charcoal">Our Love Quests</p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
                 <div className="text-center">
                     <HeartIcon className="w-8 h-8 text-red-500 mx-auto"/>
                     <span className="font-bold text-lg text-rose-gold">{streak}</span>
@@ -161,7 +161,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
   }, [userProgress, userName]);
 
   if (!userProgress) {
-    return <div className="text-center p-8">Loading your love story...</div>;
+    return (
+        <div className="min-h-screen bg-rose-gold flex items-center justify-center">
+            <p className="text-white font-serif text-2xl animate-pulse">Loading your love story...</p>
+        </div>
+    );
   }
 
   return (

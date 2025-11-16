@@ -6,8 +6,8 @@ export const TASKS: Task[] = [
     id: 't1',
     title: 'Hydration Challenge',
     description: 'Drink 8 glasses of water a day. Your body is a temple!',
-    type: TaskType.ONCE,
-    duration: 1,
+    type: TaskType.DAILY,
+    duration: 3,
     rewardId: 'r1',
   },
   {
