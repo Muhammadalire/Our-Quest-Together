@@ -64,10 +64,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 Load Our Progress
             </button>
         </div>
-         <div className="mt-8 text-xs text-gray-500 font-sans">
-            <p><strong>Note for the developer (my amazing partner):</strong></p>
-            <p>This app stores all progress on your device. To add/edit tasks or rewards, you'll need to edit the `data/mockData.ts` file in the code. To add a personalized Gemini story, edit `components/RewardModal.tsx` where it says "Your Name".</p>
-        </div>
+        
       </div>
       <SyncProgressModal 
         isOpen={isSyncModalOpen}
