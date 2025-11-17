@@ -3,12 +3,12 @@ import { Task, Reward, TaskType, RewardType } from '../types';
 
 export const TASKS: Task[] = [
   {
-    id: 't1',
+    id: 't7',
     title: 'Hydration Challenge',
     description: 'Drink 8 glasses of water a day. Your body is a temple!',
     type: TaskType.DAILY,
     duration: 3,
-    rewardId: 'r1',
+    rewardId: 'r7',
   },
   {
     id: 't5',
@@ -38,16 +38,16 @@ export const TASKS: Task[] = [
 
 export const REWARDS: Reward[] = [
   {
-    id: 'r1',
+    id: 'r7',
     title: 'A Silly Video',
     type: RewardType.TEXT,
-    content: "A 30 second video of me doing cat-cow strech",
+    content: "A 30 second video of me doing cat-cow strech, trust me its weird.",
   },
   {
     id: 'r5',
     title: 'A TikTok ',
     type: RewardType.TEXT,
-    content: 'A video of me pn geyomi song.',
+    content: 'A video of me on geyomi song.',
   },
   {
     id: 'r6',
