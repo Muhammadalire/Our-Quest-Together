@@ -57,7 +57,7 @@ export const REWARDS: Reward[] = [
   },
   {
     id: 'r4',
-    title: 'A Promise',
+    title: 'The Promise',
     type: RewardType.TEXT,
     content: "I promise, always make time for us, to put away distractions, and to be present with you. This is just the beginning."
   }
