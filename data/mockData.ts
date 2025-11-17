@@ -33,6 +33,14 @@ export const TASKS: Task[] = [
     type: TaskType.ONCE,
     duration: 1,
     rewardId: 'r4'
+  },
+  {
+    id: 't2',
+    title: 'Good Girl',
+    description: 'Write "I am my sweet loves good girl" three times on any journal/copy/notebook or digitally.',
+    type: TaskType.ONCE,
+    duration: 1,
+    rewardId: 'r2'
   }
 ];
 
@@ -51,6 +59,12 @@ export const REWARDS: Reward[] = [
   },
   {
     id: 'r6',
+    title: 'An Essay on Youu',
+    type: RewardType.TEXT,
+    content: 'A descriptive essay on your beauty, soul heart and appereance.',
+  },
+  {
+    id: 'r2',
     title: 'An Essay on Youu',
     type: RewardType.TEXT,
     content: 'A descriptive essay on your beauty, soul heart and appereance.',
