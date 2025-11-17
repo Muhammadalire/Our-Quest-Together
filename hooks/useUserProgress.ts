@@ -15,8 +15,6 @@ const useUserProgress = (userName: string | null) => {
         completedTasks: [],
         unlockedRewards: [],
         dailyProgress: {},
-        streak: 0,
-        lastCompletedDate: null,
       };
     } catch (error) {
       console.error(error);
@@ -50,4 +48,3 @@ const useUserProgress = (userName: string | null) => {
 };
 
 export default useUserProgress;
-   

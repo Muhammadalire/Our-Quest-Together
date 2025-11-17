@@ -3,11 +3,12 @@ import { Task, Reward, UserProgress, TaskType } from '../types';
 import useUserProgress from '../hooks/useUserProgress';
 import RewardModal from './RewardModal';
 import { TASKS, REWARDS } from '../data/mockData';
-import { HeartIcon, CheckCircleIcon, LockIcon, GiftIcon, SyncIcon } from './icons';
+import { CheckCircleIcon, LockIcon, GiftIcon, SyncIcon, LogoutIcon } from './icons';
 import SyncProgressModal from './SyncProgressModal';
 
 interface DashboardProps {
   userName: string;
+  onLogout: () => void;
 }
 
 const isToday = (someDate: string) => {
@@ -18,7 +19,7 @@ const isToday = (someDate: string) => {
            date.getFullYear() === today.getFullYear();
 };
 
-const Header: React.FC<{ userName: string, streak: number, onOpenSync: () => void }> = ({ userName, streak, onOpenSync }) => (
+const Header: React.FC<{ userName: string, onOpenSync: () => void, onLogout: () => void }> = ({ userName, onOpenSync, onLogout }) => (
     <header className="bg-blush/80 backdrop-blur-sm p-4 rounded-b-2xl shadow-lg sticky top-0 z-10">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
             <div>
@@ -26,12 +27,11 @@ const Header: React.FC<{ userName: string, streak: number, onOpenSync: () => voi
                 <p className="font-sans text-charcoal">Our Love Quests</p>
             </div>
             <div className="flex items-center space-x-2 md:space-x-4">
-                <div className="text-center">
-                    <HeartIcon className="w-8 h-8 text-red-500 mx-auto"/>
-                    <span className="font-bold text-lg text-rose-gold">{streak}</span>
-                </div>
                 <button onClick={onOpenSync} title="Sync Progress" className="font-sans bg-rose-gold text-white p-2 rounded-full hover:bg-opacity-80 transition">
                     <SyncIcon className="w-5 h-5" />
+                </button>
+                <button onClick={onLogout} title="Logout" className="font-sans bg-charcoal text-white p-2 rounded-full hover:bg-opacity-80 transition">
+                    <LogoutIcon className="w-5 h-5" />
                 </button>
             </div>
         </div>
@@ -97,7 +97,7 @@ const RewardItem: React.FC<{ reward: Reward, isUnlocked: boolean, onOpen: (rewar
 );
 
 
-const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
+const Dashboard: React.FC<DashboardProps> = ({ userName, onLogout }) => {
   const [userProgress, saveUserProgress] = useUserProgress(userName);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
   const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
@@ -106,45 +106,32 @@ const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
   const rewards = useMemo(() => REWARDS, []);
   
   const handleTaskCompletion = useCallback((taskId: string) => {
-      if (!userProgress) return;
-  
-      const task = tasks.find(t => t.id === taskId);
-      if (!task) return;
-  
-      let newProgress = { ...userProgress, dailyProgress: { ...userProgress.dailyProgress } };
-      const today = new Date();
-      const todayStr = today.toDateString();
-      const yesterday = new Date();
-      yesterday.setDate(today.getDate() - 1);
-  
-      // Update streak
-      if (userProgress.lastCompletedDate !== todayStr) {
-          if (userProgress.lastCompletedDate === yesterday.toDateString()) {
-              newProgress.streak += 1;
-          } else {
-              newProgress.streak = 1;
-          }
-          newProgress.lastCompletedDate = todayStr;
-      }
-  
-      let taskProgress = newProgress.dailyProgress[taskId] || { currentProgress: 0, completedDates: [] };
-      if (taskProgress.completedDates.includes(todayStr)) return; // Already completed today
-      
-      taskProgress.completedDates.push(todayStr);
-  
-      if (task.type === TaskType.ONCE) {
-          newProgress.completedTasks = [...newProgress.completedTasks, taskId];
-          newProgress.unlockedRewards = [...newProgress.unlockedRewards, task.rewardId];
-      } else if (task.type === TaskType.DAILY) {
-          taskProgress.currentProgress += 1;
-          if (taskProgress.currentProgress >= task.duration) {
-              newProgress.completedTasks = [...newProgress.completedTasks, taskId];
-              newProgress.unlockedRewards = [...newProgress.unlockedRewards, task.rewardId];
-          }
-      }
-  
-      newProgress.dailyProgress[taskId] = taskProgress;
-      saveUserProgress(newProgress);
+    if (!userProgress) return;
+
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    let newProgress = { ...userProgress, dailyProgress: { ...userProgress.dailyProgress } };
+    const todayStr = new Date().toDateString();
+
+    let taskProgress = newProgress.dailyProgress[taskId] || { currentProgress: 0, completedDates: [] };
+    if (taskProgress.completedDates.includes(todayStr)) return; // Already completed today
+    
+    taskProgress.completedDates.push(todayStr);
+
+    if (task.type === TaskType.ONCE) {
+        newProgress.completedTasks = [...newProgress.completedTasks, taskId];
+        newProgress.unlockedRewards = [...newProgress.unlockedRewards, task.rewardId];
+    } else if (task.type === TaskType.DAILY) {
+        taskProgress.currentProgress += 1;
+        if (taskProgress.currentProgress >= task.duration) {
+            newProgress.completedTasks = [...newProgress.completedTasks, taskId];
+            newProgress.unlockedRewards = [...newProgress.unlockedRewards, task.rewardId];
+        }
+    }
+
+    newProgress.dailyProgress[taskId] = taskProgress;
+    saveUserProgress(newProgress);
   }, [userProgress, saveUserProgress, tasks]);
 
   if (!userProgress) {
@@ -157,7 +144,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userName }) => {
 
   return (
     <div className="min-h-screen bg-cream font-sans text-charcoal">
-      <Header userName={userName} streak={userProgress.streak} onOpenSync={() => setIsSyncModalOpen(true)} />
+      <Header userName={userName} onOpenSync={() => setIsSyncModalOpen(true)} onLogout={onLogout} />
       
       <main className="max-w-4xl mx-auto p-4 md:p-6 space-y-8">
         <section>

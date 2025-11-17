@@ -34,7 +34,4 @@ export interface UserProgress {
     completedDates: string[];
     currentProgress: number;
   }>;
-  streak: number;
-  lastCompletedDate: string | null;
 }
-   

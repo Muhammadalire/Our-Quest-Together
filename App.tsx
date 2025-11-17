@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Dashboard from './components/Dashboard';
 import LoginScreen from './components/LoginScreen';
@@ -18,11 +19,16 @@ const App: React.FC = () => {
     setUserName(name);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('loveQuests_currentUser');
+    setUserName(null);
+  };
+
   if (!userName) {
     return <LoginScreen onLogin={handleLogin} />;
   }
 
-  return <Dashboard userName={userName} />;
+  return <Dashboard userName={userName} onLogout={handleLogout} />;
 };
 
 export default App;

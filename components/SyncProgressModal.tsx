@@ -55,7 +55,7 @@ const SyncProgressModal: React.FC<SyncProgressModalProps> = ({ isOpen, onClose, 
         const decoded = atob(pasteCode); // Base64 decode
         const progress: UserProgress = JSON.parse(decoded);
 
-        if (!progress.name || typeof progress.completedTasks === 'undefined' || typeof progress.streak === 'undefined') {
+        if (!progress.name || typeof progress.completedTasks === 'undefined') {
             throw new Error("Invalid progress code format.");
         }
         
