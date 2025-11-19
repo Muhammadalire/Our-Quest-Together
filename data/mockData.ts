@@ -45,7 +45,7 @@ export const REWARDS: Reward[] = [
   },
   {
     id: 'r5',
-    title: 'A TikTok ',
+    title: 'A Video ',
     type: RewardType.TEXT,
     content: 'A video of me doing dual jerk-off workout',
   },
