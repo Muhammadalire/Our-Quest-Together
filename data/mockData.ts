@@ -15,7 +15,7 @@ export const TASKS: Task[] = [
     title: 'Spreading Positivity',
     description: 'Give 1 compliment to each family member, it can be anything like telling Nada how well she draws or telling Kakak how hard she worked for degree, etc.',
     type: TaskType.ONCE,
-    duration: 1,
+    duration: 2,
     rewardId: 'r5',
   },
   {
@@ -23,7 +23,7 @@ export const TASKS: Task[] = [
     title: 'Morning Appreciation',
     description: 'When you wake up, go in front of the mirror and praise yourself: "how adorable, kind, caring I am. How I am so loved and cared for. How sweet I am and how deeply I care. How I am such a good girl"',
     type: TaskType.ONCE,
-    duration: 1,
+    duration: 4,
     rewardId: 'r6',
   },
   {
@@ -33,14 +33,6 @@ export const TASKS: Task[] = [
     type: TaskType.ONCE,
     duration: 1,
     rewardId: 'r4'
-  },
-  {
-    id: 't2',
-    title: 'Good Girl',
-    description: 'Write "I am my sweet loves good girl" three times on any journal/copy/notebook or digitally.',
-    type: TaskType.ONCE,
-    duration: 1,
-    rewardId: 'r2'
   }
 ];
 
@@ -55,7 +47,7 @@ export const REWARDS: Reward[] = [
     id: 'r5',
     title: 'A TikTok ',
     type: RewardType.TEXT,
-    content: 'A video of me on geyomi song.',
+    content: 'A video of me doing dual jerk-off workout',
   },
   {
     id: 'r6',
@@ -63,17 +55,12 @@ export const REWARDS: Reward[] = [
     type: RewardType.TEXT,
     content: 'A descriptive essay on your beauty, soul heart and appereance.',
   },
-  {
-    id: 'r2',
-    title: 'An Essay on Youu',
-    type: RewardType.TEXT,
-    content: 'A descriptive essay on your beauty, soul heart and appereance.',
-  },
+  
   {
     id: 'r4',
-    title: 'The Promise',
+    title: 'Tummy Drum',
     type: RewardType.TEXT,
-    content: "I promise, always make time for us, to put away distractions, and to be present with you. This is just the beginning."
+    content: "Me doing tummy drum."
   }
 ];
    
